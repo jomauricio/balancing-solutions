@@ -8,6 +8,7 @@ from sklearn.metrics import accuracy_score
 
 from algorithm.BasicGA import BasicGA
 from algorithm.Config import Config
+from code import Params
 from evaluation_function.Fitness import Fitness
 
 def main():
@@ -26,29 +27,29 @@ def main():
     stats.register("max", numpy.max, axis = 0)
 
     # pop, log = algorithms.eaSimple(pop, toolbox, cxpb=0.5, mutpb=0.3, ngen=5, stats=stats, halloffame=hof, verbose=True)
-    pop, log = algorithm.run(config, cxpb=0.5, mutpb=0.3, ngen=5, stats=stats, halloffame=hof, verbose=True)
+    pop, log = algorithm.run(config, cxpb=0.5, mutpb=0.5, ngen=Params.NGENERATIONS, stats=stats, halloffame=hof, verbose=True)
     return pop, log, hof
 
 
 if __name__ == "__main__":
-    f = open("RandomForest_GA_30por1000_ACC" + "_Base.txt", "w")
+    f = open("RandomForest_GA_"+ str(Params.POPULATION_SIZE) + "por" + str(Params.NGENERATIONS) +"_ACC.txt", "w")
     warnings.filterwarnings("ignore")
 
 
-    test = pd.read_csv("en - en.csv")
-    train = pd.read_csv("pt - pt.csv")
-    test_data, test_target = test.iloc[:, 0:53], test["classe"]
-    train_data, train_target = train.iloc[:, 0:53], train["classe"]
-
-    clf = RandomForestClassifier(n_estimators=200, max_features=6, warm_start=True, oob_score=True)
-    clf.fit(train_data, train_target)
-    predict = clf.predict(test_data)
-    print(accuracy_score(test_target, predict))
+    # test = Params.BASE_TEST
+    # train = Params.BASE_TRAIN
+    # test_data, test_target = test.iloc[:, 0:53], test["classe"]
+    # train_data, train_target = train.iloc[:, 0:53], train["classe"]
+    #
+    # clf = RandomForestClassifier(n_estimators=200, max_features=6, warm_start=True, oob_score=True)
+    # clf.fit(train_data, train_target)
+    # predict = clf.predict(test_data)
+    # print(accuracy_score(test_target, predict))
 
 
     results = main()
     df_log = pd.DataFrame(results[1])
-    df_log.to_csv("LogBook_RandomForest_GA_30por1000_ACC" + "_Base.csv", index=False)
+    df_log.to_csv("LogBook_RandomForest_GA_"+ str(Params.POPULATION_SIZE) + "por" + str(Params.NGENERATIONS) + "_ACC.csv", index=False)
     f.write(str(results[2]))
     f.close()
 

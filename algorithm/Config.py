@@ -18,7 +18,7 @@ class Config():
         self.toolbox.register("population", tools.initRepeat, list, self.toolbox.individual)
 
         self.toolbox.register("evaluate", evaluator.evaluate)
-        self.toolbox.register("mate", tools.cxTwoPoint)
+        self.toolbox.register("mate", tools.cxUniform, indpb=0.50)
         self.toolbox.register("mutate", tools.mutShuffleIndexes, indpb=0.25)
         self.toolbox.register("select", tools.selTournament, tournsize=3)
 

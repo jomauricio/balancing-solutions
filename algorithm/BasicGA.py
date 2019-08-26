@@ -7,19 +7,33 @@ class BasicGA():
                  halloffame=None, verbose=__debug__):
 
         logbook = tools.Logbook()
+        sequencelog = {}
         logbook.header = ['gen', 'nevals', 'pop', 'hof'] + (stats.fields if stats else [])
 
         # Evaluate the individuals with an invalid fitness
-        invalid_ind = [ind for ind in config.pop if not ind.fitness.valid]
-        fitnesses = config.toolbox.map(config.toolbox.evaluate, invalid_ind)
-        for ind, fit in zip(invalid_ind, fitnesses):
-            ind.fitness.values = fit
+        # invalid_ind = [ind for ind in config.pop if not ind.fitness.valid]
+        # fitnesses = config.toolbox.map(config.toolbox.evaluate, invalid_ind)
+        # for ind, fit in zip(invalid_ind, fitnesses):
+        #     ind.fitness.values = fit
+
+
+        nevals = 0
+        # Evaluate the individual whose sequence is yet to be evaluated
+        for ind in config.pop:
+            seq = list(filter(lambda x: x != 0, ind))
+            if(str(seq) not in sequencelog):
+                nevals += 1
+                fit = config.toolbox.evaluate(seq)
+                sequencelog[str(seq)] = fit
+                ind.fitness.values = fit
+            else:
+                ind.fitness.values = sequencelog[str(seq)]
 
         if halloffame is not None:
             halloffame.update(config.pop)
 
         record = stats.compile(config.pop) if stats else {}
-        logbook.record(gen=0, nevals=len(invalid_ind), hof=halloffame, **record)
+        logbook.record(gen=0, nevals=nevals, pop=config.pop, hof=halloffame, **record)
         if verbose:
             print(logbook.stream)
 
@@ -32,10 +46,22 @@ class BasicGA():
             offspring = algorithms.varAnd(offspring, config.toolbox, cxpb, mutpb)
 
             # Evaluate the individuals with an invalid fitness
-            invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
-            fitnesses = config.toolbox.map(config.toolbox.evaluate, invalid_ind)
-            for ind, fit in zip(invalid_ind, fitnesses):
-                ind.fitness.values = fit
+            # invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
+            # fitnesses = config.toolbox.map(config.toolbox.evaluate, invalid_ind)
+            # for ind, fit in zip(invalid_ind, fitnesses):
+            #     ind.fitness.values = fit
+
+            # Evaluate the individual whose sequence is yet to be evaluated
+            nevals = 0
+            for ind in offspring:
+                seq = list(filter(lambda x: x != 0, ind))
+                if (str(seq) not in sequencelog):
+                    nevals += 1
+                    fit = config.toolbox.evaluate(seq)
+                    sequencelog[str(seq)] = fit
+                    ind.fitness.values = fit
+                else:
+                    ind.fitness.values = sequencelog[str(seq)]
 
             # Update the hall of fame with the generated individuals
             if halloffame is not None:
@@ -46,8 +72,7 @@ class BasicGA():
 
             # Append the current generation statistics to the logbook
             record = stats.compile(config.pop) if stats else {}
-            logbook.record(gen=gen, nevals=len(invalid_ind), pop=config.pop, hof=halloffame, **record)
+            logbook.record(gen=gen, nevals=nevals, pop=config.pop, hof=halloffame, **record)
             if verbose:
                 print(logbook.stream)
-
         return config.pop, logbook
