@@ -1,5 +1,6 @@
 from deap import tools
 from deap import algorithms
+import pandas as pd
 
 class BasicGA():
 

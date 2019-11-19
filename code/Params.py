@@ -7,8 +7,7 @@ import pandas as pd
 INDIVIDUAL_SIZE = 5
 N_ALGORITHMS = 6
 
-BASE_TRAIN = pd.read_csv("pt - pt.csv")
-BASE_TEST = pd.read_csv("en - en.csv")
+BASE_TEST = pd.read_csv("data/satimage.csv")
 
-POPULATION_SIZE = 100
-NGENERATIONS = 1000
+POPULATION_SIZE = 10
+NGENERATIONS = 10
