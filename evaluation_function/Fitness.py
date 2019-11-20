@@ -7,7 +7,6 @@ from imblearn.under_sampling import EditedNearestNeighbours
 from imblearn.over_sampling import SMOTE
 from imblearn.under_sampling import TomekLinks
 from imblearn.under_sampling import OneSidedSelection
-from imblearn.combine import SMOTETomek
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
@@ -71,8 +70,6 @@ class Fitness():
                             output_train_data, output_train_target = TomekLinks().fit_resample(output_train_data, output_train_target)
                         elif (feature == 5):
                             output_train_data, output_train_target = OneSidedSelection().fit_resample(output_train_data, output_train_target)
-                        elif (feature == 6):
-                            output_train_data, output_train_target = SMOTETomek().fit_resample(output_train_data, output_train_target)
 
 
                     clf = RandomForestClassifier(n_estimators=10, max_features=6, warm_start=True, oob_score=True)

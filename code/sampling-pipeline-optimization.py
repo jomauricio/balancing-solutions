@@ -106,9 +106,6 @@ if __name__ == "__main__":
     #     elif (feature == 5):
     #         output_train_data, output_train_target = OneSidedSelection().fit_resample(output_train_data,
     #                                                                                   output_train_target)
-    #     elif (feature == 6):
-    #         output_train_data, output_train_target = SMOTETomek().fit_resample(output_train_data,
-    #                                                                            output_train_target)
     # # print(output_train_data)
     # df = pd.DataFrame(data=output_train_data, columns=train_data.columns)
     # df['classe'] = output_train_target

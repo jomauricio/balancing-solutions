@@ -7,7 +7,6 @@ from imblearn.under_sampling import EditedNearestNeighbours
 from imblearn.over_sampling import SMOTE
 from imblearn.under_sampling import TomekLinks
 from imblearn.under_sampling import OneSidedSelection
-from imblearn.combine import SMOTETomek
 import pandas as pd
 import numpy
 from sklearn.model_selection import train_test_split
@@ -98,9 +97,5 @@ class DataDifferentiation():
                     dif = df_ant.drop(indc)
                     if (dif.empty == False):
                         dif.to_csv("Diferença entre os passos " + str(n) + "e " + str(n-1) + ".csv")
-                elif (feature == 6):
-                    output_train_data, output_train_target = SMOTETomek().fit_resample(output_train_data, output_train_target)
-                    df = pd.DataFrame(data=output_train_data, columns=data.columns)
-                    df['classe'] = output_train_target
         except:
             print("collision")
