@@ -1,11 +1,11 @@
 from deap import tools
 from deap import algorithms
-import pandas as pd
 
-class BasicGA():
+
+class BasicGA:
 
     def run(self, config, cxpb, mutpb, ngen, stats=None,
-                 halloffame=None, verbose=__debug__):
+            halloffame=None, verbose=__debug__):
 
         logbook = tools.Logbook()
         sequencelog = {}
@@ -17,12 +17,11 @@ class BasicGA():
         # for ind, fit in zip(invalid_ind, fitnesses):
         #     ind.fitness.values = fit
 
-
         nevals = 0
         # Evaluate the individual whose sequence is yet to be evaluated
         for ind in config.pop:
             seq = list(filter(lambda x: x != 0, ind))
-            if(str(seq) not in sequencelog):
+            if str(seq) not in sequencelog:
                 nevals += 1
                 fit = config.toolbox.evaluate(seq)
                 sequencelog[str(seq)] = fit
@@ -56,7 +55,7 @@ class BasicGA():
             nevals = 0
             for ind in offspring:
                 seq = list(filter(lambda x: x != 0, ind))
-                if (str(seq) not in sequencelog):
+                if str(seq) not in sequencelog:
                     nevals += 1
                     fit = config.toolbox.evaluate(seq)
                     sequencelog[str(seq)] = fit

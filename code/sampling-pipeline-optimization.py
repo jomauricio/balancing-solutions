@@ -2,25 +2,11 @@ import random
 import numpy
 import warnings
 from deap import tools
-from sklearn.ensemble import RandomForestClassifier
-import pandas as pd
-from sklearn.metrics import accuracy_score
-from sklearn.metrics import cohen_kappa_score
-import matplotlib.pyplot as plt
-from sklearn.decomposition import PCA
-
-
 from algorithm.BasicGA import BasicGA
 from algorithm.Config import Config
 from code import Params
 from evaluation_function.Fitness import Fitness
 
-from imblearn.under_sampling import NearMiss
-from imblearn.under_sampling import EditedNearestNeighbours
-from imblearn.over_sampling import SMOTE
-from imblearn.under_sampling import TomekLinks
-from imblearn.under_sampling import OneSidedSelection
-from imblearn.combine import SMOTETomek
 
 def main():
     random.seed()
@@ -32,12 +18,13 @@ def main():
 
     hof = tools.ParetoFront()
     stats = tools.Statistics(lambda ind: ind.fitness.values)
-    stats.register("avg", numpy.mean, axis = 0)
-    stats.register("std", numpy.std, axis = 0)
-    stats.register("min", numpy.min, axis = 0)
-    stats.register("max", numpy.max, axis = 0)
+    stats.register("avg", numpy.mean, axis=0)
+    stats.register("std", numpy.std, axis=0)
+    stats.register("min", numpy.min, axis=0)
+    stats.register("max", numpy.max, axis=0)
 
-    pop, log = algorithm.run(config, cxpb=0.5, mutpb=0.5, ngen=Params.NGENERATIONS, stats=stats, halloffame=hof, verbose=True)
+    pop, log = algorithm.run(config, cxpb=0.5, mutpb=0.5, ngen=Params.NGENERATIONS, stats=stats, halloffame=hof,
+                             verbose=True)
 
     return pop, log, hof
 
@@ -46,10 +33,7 @@ if __name__ == "__main__":
     # f = open("RandomForest_GA_"+ str(Params.POPULATION_SIZE) + "por" + str(Params.NGENERATIONS) +"_ACC.txt", "w")
     warnings.filterwarnings("ignore")
     resulsts = main()
-    print(resulsts[2])
-
-
-
+    print(resulsts)
 
     # Ler sequencias do dicionario(.csv) e montar grafico com pca
     #
@@ -115,5 +99,3 @@ if __name__ == "__main__":
     # predict = clf.predict(test_data)
     # print(accuracy_score(test_target, predict))
     # print(cohen_kappa_score(test_target, predict))
-
-

@@ -1,5 +1,3 @@
-import pandas as pd
-
 from sklearn.ensemble import RandomForestClassifier
 
 from imblearn.under_sampling import NearMiss
@@ -7,7 +5,6 @@ from imblearn.under_sampling import EditedNearestNeighbours
 from imblearn.over_sampling import SMOTE
 from imblearn.under_sampling import TomekLinks
 from imblearn.under_sampling import OneSidedSelection
-import pandas as pd
 from sklearn.model_selection import train_test_split
 
 from sklearn.metrics import f1_score
@@ -19,18 +16,17 @@ from imblearn.metrics import geometric_mean_score
 
 from code import Params
 
-class Fitness():
+
+class Fitness:
 
     def __init__(self):
         self.problem_type = (1.0, 1.0, 1.0, 1.0, 1.0, 1.0)
-        self.n = 5          # media de n execuções
+        self.n = 5  # media de n execuções
 
     def evaluate(self, individual):
-        if(len(individual) > 0):
+        if len(individual) > 0:
             test = Params.BASE_TEST
             # train = Params.BASE_TRAIN
-
-
 
             # test_target = test['X21'].tolist()
             # test_data = test.drop(['X21'], 1)
@@ -42,7 +38,8 @@ class Fitness():
             target = test['X37'].tolist()
             data = test.drop(['X37'], 1)
 
-            train_data, test_data, train_target, test_target = train_test_split(data, target, random_state=42, stratify=target)
+            train_data, test_data, train_target, test_target = train_test_split(data, target, random_state=42,
+                                                                                stratify=target)
 
             # train_target = train['classe'].tolist()
             # train = train.drop(['classe'], 1)
@@ -50,7 +47,7 @@ class Fitness():
             # train_data, train_target = train.iloc[:,1:52], train["classe"]
 
             acc = 0
-            fscore =0
+            fscore = 0
             gm = 0
             recall = 0
             precision = 0
@@ -61,16 +58,20 @@ class Fitness():
                 try:
                     for feature in individual:
                         if (feature == 1):
-                            output_train_data, output_train_target = NearMiss().fit_resample(output_train_data, output_train_target)
+                            output_train_data, output_train_target = NearMiss().fit_resample(output_train_data,
+                                                                                             output_train_target)
                         elif (feature == 2):
-                            output_train_data, output_train_target = EditedNearestNeighbours().fit_resample(output_train_data, output_train_target)
+                            output_train_data, output_train_target = EditedNearestNeighbours().fit_resample(
+                                output_train_data, output_train_target)
                         elif (feature == 3):
-                            output_train_data, output_train_target = SMOTE().fit_resample(output_train_data, output_train_target)
+                            output_train_data, output_train_target = SMOTE().fit_resample(output_train_data,
+                                                                                          output_train_target)
                         elif (feature == 4):
-                            output_train_data, output_train_target = TomekLinks().fit_resample(output_train_data, output_train_target)
+                            output_train_data, output_train_target = TomekLinks().fit_resample(output_train_data,
+                                                                                               output_train_target)
                         elif (feature == 5):
-                            output_train_data, output_train_target = OneSidedSelection().fit_resample(output_train_data, output_train_target)
-
+                            output_train_data, output_train_target = OneSidedSelection().fit_resample(output_train_data,
+                                                                                                      output_train_target)
 
                     clf = RandomForestClassifier(n_estimators=10, max_features=6, warm_start=True, oob_score=True)
                     clf.fit(output_train_data, output_train_target)
@@ -93,12 +94,12 @@ class Fitness():
                     precision = 0
                     auc = 0
                     return acc, fscore, gm, recall, precision, auc
-            acc = acc/self.n
-            fscore = fscore/self.n
-            gm = gm/self.n
-            recall = recall/self.n
-            precision = precision/self.n
-            auc = auc/self.n
+            acc = acc / self.n
+            fscore = fscore / self.n
+            gm = gm / self.n
+            recall = recall / self.n
+            precision = precision / self.n
+            auc = auc / self.n
         else:
             acc = -1
             fscore = -1

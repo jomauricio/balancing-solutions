@@ -1,6 +1,6 @@
-'''
+"""
 Configuration for the problem
-'''
+"""
 
 import pandas as pd
 
