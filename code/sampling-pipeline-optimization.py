@@ -1,11 +1,19 @@
 import random
-import numpy
 import warnings
-from deap import tools
+
+import numpy
 from algorithm.BasicGA import BasicGA
 from algorithm.Config import Config
-from code import Params
+from deap import tools
 from evaluation_function.Fitness import Fitness
+
+from . import Params
+
+
+def write_results(results):
+    with open("code/results.txt", "w") as external_file:
+        print(results, file=external_file)
+        external_file.close()
 
 
 def main():
@@ -33,6 +41,7 @@ if __name__ == "__main__":
     # f = open("RandomForest_GA_"+ str(Params.POPULATION_SIZE) + "por" + str(Params.NGENERATIONS) +"_ACC.txt", "w")
     warnings.filterwarnings("ignore")
     resulsts = main()
+    write_results(resulsts)
     print(resulsts)
 
     # Ler sequencias do dicionario(.csv) e montar grafico com pca

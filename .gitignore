@@ -1,0 +1,5 @@
+.idea
+venv
+.mypy_cache
+.pytest_cache
+results.txt
