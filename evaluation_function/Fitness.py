@@ -1,11 +1,12 @@
 from code import Params
 
 import numpy as np
-# from imblearn.metrics import geometric_mean_score
+from imblearn.metrics import geometric_mean_score
 from imblearn.over_sampling import SMOTE
 from imblearn.under_sampling import (EditedNearestNeighbours, NearMiss,
                                      OneSidedSelection, TomekLinks)
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import make_scorer
 from sklearn.model_selection import (StratifiedKFold, cross_validate,
                                      train_test_split)
 from sklearn.neighbors import KNeighborsClassifier
@@ -38,8 +39,9 @@ class Fitness:
             data = test.drop(['Result'], 1)
 
             # train_data, test_data, train_target, test_target = train_test_split(data, target, random_state=42, stratify = target)
-            name_metrics = ['accuracy', 'f1_macro']
-
+            # name_metrics = ['accuracy', 'f1', 'recall', 'precision', 'roc_auc']
+            name_metrics = {'accuracy': 'accuracy', 'f1': 'f1', 'recall': 'recall',
+                            'precision': 'precision', 'roc_auc': 'roc_auc', 'gm': make_scorer(geometric_mean_score)}
             # train_target = train['classe'].tolist()
             # train = train.drop(['classe'], 1)
             # train_data = train.as_matrix()
@@ -100,8 +102,12 @@ class Fitness:
                     metrics = cross_validate(
                         clf, output_data, output_target, cv=stratifiedKFold, scoring=name_metrics)
 
-                    acc += np.mean(metrics['accuracy'])
-                    fscore += np.mean(metrics['f1'])
+                    acc += np.mean(metrics['test_accuracy'])
+                    fscore += np.mean(metrics['test_f1'])
+                    gm += np.mean(metrics['test_gm'])
+                    recall += np.mean(metrics['test_recall'])
+                    precision += np.mean(metrics['test_precision'])
+                    auc += np.mean(metrics['test_roc_auc'])
 
                     # acc += accuracy_score(test_target, predict)
                     # fscore += f1_score(test_target, predict)

@@ -40,9 +40,9 @@ def main():
 if __name__ == "__main__":
     # f = open("RandomForest_GA_"+ str(Params.POPULATION_SIZE) + "por" + str(Params.NGENERATIONS) +"_ACC.txt", "w")
     warnings.filterwarnings("ignore")
-    resulsts = main()
-    write_results(resulsts)
-    print(resulsts)
+    results = main()
+    write_results(results)
+    print(results)
 
     # Ler sequencias do dicionario(.csv) e montar grafico com pca
     #
